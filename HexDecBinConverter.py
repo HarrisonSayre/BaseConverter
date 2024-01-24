@@ -8,25 +8,14 @@ binaryhexdigitdictionay = {"0000":'0', "0001":'1', "0010":'2',"0011":'3', "0100"
                            "1010":'A', "1011":'B',"1100":'C', "1101":'D', "1110":'E', "1111":'F'}
 
 
-#Need to make this so it can handle a wrong answer properly
+#Uses a dictionary to find the decimal value of a 1-F in hexadecimal.
 def HexConvert(hexdigit):
     hexletter = hexdigitdictionay.get(hexdigit)
     if hexletter != None:
         return hexletter
     return None     # This handles if there isn't a valid hexadecimal number (None will trigger checks in the converter to prompt for a correctly format number)
 
-#While loop version - first I made
-def HextoDecWhile (n):
-    total = 0
-    power = 0
-    rightmost=(len(n)-1)
-    while(rightmost >= 0):
-        total += 16**power * HexConvert(n[rightmost].upper())
-        power += 1
-        rightmost -= 1
-    return (total)
-
-#for loop version -second made
+#Hexadecimal to Decimal
 def HextoDecFor (n):
     power = len(n)-1
     total = 0
@@ -38,8 +27,9 @@ def HextoDecFor (n):
         power -= 1
     return (total)
 
+#Decimal to Hexadecimal
 def DectoHex(n):
-    divised = n #can probably just make this n instead
+    divised = n
     hexnumber = ""
     while divised != 0:
         remainder = divised%16
@@ -51,27 +41,18 @@ def DectoHex(n):
     #print(hexnumber)
     return(Reverse(hexnumber))
 
-#First approach. Basically just Dec to Hex but with binary.
-def NaiveDectoBin(n):
-    binarynumber = ""
-    while n > 0:
-        remainder = n%2
-        binarynumber += (chr(remainder+48))
-        n = n//2
-            #"0b"+ will make it look like how Python does it.
-    return (Reverse(binarynumber))
-
-#This Works. Second algo done
+#Decimal to Binary using recursion
 def RecursiveDectoBin(n):
     if n == 0:
         return ''
     return RecursiveDectoBin(n//2)+str(n%2)    
 
+#Binary to Decimal conversion
 def BinarytoDecimal(n):
     power = len(n)-1 # = 0
     total = 0
     for digit in n:
-        if digit != '1' and digit != '0':
+        if digit != '1' and digit != '0': #Not a proper binary string
             return None
         if digit == '1':
             total += 1*(2**power)
@@ -84,10 +65,10 @@ def BinarytoHexadecimal(n):
     while len(n)%4 != 0:
         n = '0'+n
     for digit in n:
-        if digit != '1' and digit != '0':
+        if digit != '1' and digit != '0': #Not a proper binary string
             return None
         singlehexnum += digit
-        if len(singlehexnum) == 4:
+        if len(singlehexnum) == 4: #Hex is every four bits
             finalhexnum += binaryhexdigitdictionay.get(singlehexnum)
             singlehexnum = ''
     return finalhexnum
@@ -96,11 +77,12 @@ def BinarytoHexadecimal(n):
 def LazyHextoBinary(n):
     return RecursiveDectoBin(HextoDecFor(n))
 
+#Hexadecmal to Binary
 def HexadecimaltoBinary(n):
     binarynum = ""
     for digit in n:
         current_digit = hexdigitbinarydictonary.get(digit)
-        if current_digit == None:
+        if current_digit == None: #Not a proper hexadecimal character
             return None
         binarynum += current_digit
         #print(binarynum)
@@ -115,6 +97,7 @@ def Reverse(n):
         length -= 1
     return(reversed)
 
+#Tester to handle individual fuctions without having to use the menu interface
 def Tester(enternumber):
     #DectoHexTester
     #print(DectoHex((int(enternumber))))
@@ -141,10 +124,12 @@ def Tester(enternumber):
     #print(HexadecimaltoBinary(BinarytoHexadecimal(enternumber)))
     return
 
+#Mostly exists so I wouldn't have to keep typing goodbye
 def ExitFunction():
     print("Goodbye")
     quit()
 
+#Seperate function for readability. Handles binary
 def Binary_Sub_Menu():
     while(True):
         print("Do you want to convert to decimal or hexadecimal?. Type 'Back' to choose a different base to convert instead")
@@ -189,7 +174,7 @@ def Binary_Sub_Menu():
         else:
             print("Sorry, that's not one of the options.")
 
-#Basically a copy of the below menu, but at this point I might as well have it look "proper"
+#Basically a copy of the above for hexadecimal
 def Hexadecimal_Sub_Menu():
     while(True):
         print("Do you want to convert to decimal or binary?. Type 'Back' to choose a different base to convert instead")
@@ -234,6 +219,7 @@ def Hexadecimal_Sub_Menu():
         else:
             print("Sorry, that's not one of the options.")
 
+#And the above for decimal
 def Decimal_Sub_Menu():
     while(True):
         print("Do you want to convert to hexadecimal or binary?. Type 'Back' to choose a different base to convert instead")

@@ -281,7 +281,9 @@ def Menu ():
         else:
             print("Sorry, I didn't catch that. Please type 'Decimal', 'Binary' or 'Hexadecimal'")
     return
-
-Menu()
-# Tester(input().upper().strip()) #Testing function to try indivdiual methodds without having to deal with the menu system.
-ExitFunction()
+  
+def main():
+    Menu()
+  
+if __name__ == "__main__":
+    main()
